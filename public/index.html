@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" data-astryx-theme="neutral" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f6f8f7">
+  <meta name="description" content="Relay CRM brings raw lead data and sales-ready contacts into one workspace.">
+  <title>Relay CRM</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23174a39'/%3E%3Cpath fill='none' stroke='%23c9f6aa' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' d='M33 13 18 34h14l-2 17 16-23H32z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./astryx/design.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="Workspace navigation">
+      <div class="brand">
+        <span class="brand-mark" data-icon="signal" aria-hidden="true"></span>
+        <span>Relay<span class="brand-crm"> CRM</span></span>
+      </div>
+      <nav class="nav" aria-label="Workspaces">
+        <p class="nav-heading">Workspaces</p>
+        <button class="nav-item is-active" id="nav-clean" type="button" data-action="clean" aria-current="page">
+          <span class="nav-symbol" data-icon="users"></span><span>Sales CRM</span><span class="nav-count" id="clean-count" hidden></span>
+        </button>
+        <button class="nav-item" id="nav-raw" type="button" data-action="raw">
+          <span class="nav-symbol" data-icon="flask"></span><span>Data Lab</span><span class="nav-count" id="raw-count" hidden></span>
+        </button>
+      </nav>
+      <div class="sidebar-end">
+        <button class="nav-item nav-settings" type="button" data-action="settings">
+          <span class="nav-symbol" data-icon="settings"></span><span>Workspace settings</span>
+        </button>
+        <div class="sidebar-foot">
+          <span class="workspace-avatar" aria-hidden="true">R</span>
+          <div class="workspace-identity"><span class="workspace-owner" id="workspace-name">Relay Workspace</span><span class="workspace-caption">CRM workspace</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="breadcrumbs" aria-label="Current location">
+          <span class="breadcrumb-home" data-icon="panel"></span><span class="breadcrumb-root">Workspace</span>
+          <span class="breadcrumb-divider" data-icon="chevron-right"></span><span id="breadcrumb-current">Sales CRM</span>
+        </div>
+        <button class="mode-button" id="data-mode" type="button" data-action="account" aria-label="Manage workspace access"><span class="mode-dot"></span><span>Workspace access</span></button>
+      </header>
+
+      <div class="content">
+        <header class="workspace-header">
+          <div class="workspace-info">
+            <div class="workspace-indicator" id="workspace-indicator" data-icon="users"></div>
+            <div>
+              <h1 id="workspace-title">Sales CRM</h1>
+              <p id="workspace-description">Work your approved contacts and follow up on buying signals.</p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="button import-button" id="import-action" type="button" data-action="import"><span data-icon="upload"></span><span>Import data</span></button>
+            <button class="button button-primary" id="primary-action" type="button" data-action="add"><span data-icon="plus"></span><span>Add contact</span></button>
+          </div>
+        </header>
+
+        <section class="metrics" id="metrics" aria-label="Workspace summary"></section>
+
+        <section class="records" id="records" aria-label="Workspace records" aria-busy="true">
+          <div class="view-bar">
+            <div class="view-tabs" id="view-tabs" aria-label="Saved views"></div>
+            <button class="icon-button new-view" type="button" data-action="new-view" title="Create a saved view" aria-label="Create a saved view"><span data-icon="plus"></span></button>
+          </div>
+          <div class="toolbar" id="toolbar" aria-label="Record controls">
+            <label class="search-box">
+              <span class="search-symbol" data-icon="search"></span>
+              <span class="sr-only">Search contacts</span>
+              <input type="search" id="search" placeholder="Search contacts…" autocomplete="off">
+            </label>
+            <div class="toolbar-actions">
+              <button class="button button-small" id="filter-action" type="button" data-action="filter"><span data-icon="filter"></span><span>Filter</span></button>
+              <button class="button button-small" id="sort-action" type="button" data-action="sort"><span data-icon="sort"></span><span>Sort</span></button>
+              <button class="button button-small export-button" id="export-action" type="button" data-action="export"><span data-icon="download"></span><span>Export</span></button>
+            </div>
+          </div>
+          <div class="table-scroll" tabindex="0" aria-label="Scrollable records table">
+            <table class="records-table" id="records-table">
+              <caption class="sr-only" id="table-caption">Sales contacts</caption>
+              <thead id="table-head"></thead>
+              <tbody id="table-body"><tr><td class="table-empty-cell"><div class="empty-state">Loading workspace…</div></td></tr></tbody>
+            </table>
+          </div>
+          <footer class="table-footer" id="table-footer" aria-live="polite"></footer>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <header class="dialog-header">
+      <h2 id="dialog-title"></h2>
+      <button class="icon-button dialog-close" type="button" data-action="close-dialog" aria-label="Close dialog"><span data-icon="x"></span></button>
+    </header>
+    <div class="dialog-body" id="dialog-body"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><div class="noscript">JavaScript is needed to open Relay CRM.</div></noscript>
+</body>
+</html>
