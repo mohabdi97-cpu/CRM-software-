@@ -15,7 +15,9 @@ async function openBlob() {
     const blob = await get(blobPath, { access: "private", useCache: false });
     if (!blob) return empty();
     if (!blob.stream || !blob.blob.etag) throw new Error("Storage returned incomplete workspace data.");
-    return { state: await new Response(blob.stream).json(), revision: blob.blob.etag };
+    // Blob reads can mark the same quoted object version as weak. Conditional writes require the strong form.
+    const revision = blob.blob.etag.replace(/^W\//, "");
+    return { state: await new Response(blob.stream).json(), revision };
   }
 
   async function write(state, revision) {
